@@ -31,9 +31,11 @@ public:
 		CircleDistance.X = FMath::Abs(CircleOrigin.X - RectangleOrigin.X);
 		CircleDistance.Y = FMath::Abs(CircleOrigin.Y - RectangleOrigin.Y);
 
+		//Check if the Circle bounds cannot overlap with rectangle
 		if (CircleDistance.X > (RectWidth / 2 + CircleRadius)) { return false; }
 		if (CircleDistance.Y > (RectLength / 2 + CircleRadius)) { return false; }
 
+		//Check if CircleDistance is smaller then rectangle bounds in x and y axis
 		if (CircleDistance.X <= (RectWidth / 2)) { return true; }
 		if (CircleDistance.Y <= (RectLength / 2)) { return true; }
 

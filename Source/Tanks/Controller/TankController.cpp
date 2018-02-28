@@ -18,16 +18,17 @@ void ATankController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	ATank* Tank = Cast<ATank>(GetPawn());
+	if (ATank* Tank = Cast<ATank>(GetPawn()))
+	{
+		FVector WorldLocation, WorldDirection;
+		DeprojectMousePositionToWorld(WorldLocation, WorldDirection);
 
-	FVector WorldLocation, WorldDirection;
-	DeprojectMousePositionToWorld(WorldLocation, WorldDirection);
+		FVector TankLocation = Tank->GetActorLocation();
 
-	FVector TankLocation = Tank->GetActorLocation();
+		FVector IntersectionPoint = FMath::LinePlaneIntersection(WorldLocation, WorldLocation + WorldDirection * 10000, TankLocation, Tank->GetActorUpVector());
 
-	FVector IntersectionPoint = FMath::LinePlaneIntersection(WorldLocation, WorldLocation + WorldDirection * 10000, TankLocation, Tank->GetActorUpVector());
+		DrawDebugBox(GetWorld(), IntersectionPoint, FVector(20), FColor::Blue, false, 0.1f, 0, 10.0f);
 
-	DrawDebugBox(GetWorld(), IntersectionPoint, FVector(20), FColor::Blue, false, 0.1f, 0, 10.0f);
-
-	Tank->HandleCanonRotation(IntersectionPoint);
+		Tank->HandleCanonRotation(IntersectionPoint);
+	}
 }
